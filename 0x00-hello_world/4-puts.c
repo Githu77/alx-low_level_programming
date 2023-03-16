@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <string.h>
 
- /**
- * This prints string text
- */ 
-
+/**
+*main - Main function 
+*
+*
+*Return: returns 0
+*/
 int main(void)
 {
 	char text[52];
