@@ -4,7 +4,7 @@
 *main -  The main function
 *
 *
-*return: returns 1
+*Return: returns 1
 */
 int main(void)
 {
