@@ -10,9 +10,9 @@
 int main(void)
 {
 
-	char displayed[52];
+	char text[52] ;
 
-	strcpy(displayed, "\"Programming is like building a multilingual puzzle");
-	puts(displayed);
+	strcpy(text, "\"Programming is like building a multilingual puzzle");
+	puts(text);
 	return (0);
 }
