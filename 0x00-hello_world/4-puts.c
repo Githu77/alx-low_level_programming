@@ -2,10 +2,10 @@
 #include <string.h>
 
 /**
-*main - Main function 
+*main - Main function
 *
 *
-*Return: returns 0 
+*Return: returns 0
 */
 int main(void)
 {
