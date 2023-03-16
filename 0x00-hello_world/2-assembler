@@ -1,2 +1,2 @@
 #!/bin/bash
-gcc -c -S $CFILE -o third.s
+gcc -S $CFILE
