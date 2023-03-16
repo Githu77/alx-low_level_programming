@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <unistd.h>
 /**
-*The main function 
+*main: The main function 
 *
 *
-*returns 1
+*return: returns 1
 */
 int main(void)
 {
