@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <ctype.h>
 /**
-*main - Prints all single digits of base 16 followed by new line
+*main - Prints all single digits of base 16
 *
 *Return: returns 0
 */
@@ -14,10 +14,10 @@ int main(void)
 		putchar(dig);
 		if (dig == '9')
 		{
-		  digit = 'a';
-			for (; digit <= 'f'; digit++)
+		  dig = 'a';
+			for (; dig <= 'f'; dig++)
 			{
-				putchar(digit);
+				putchar(dig);
 			}
 			break;
 		}
