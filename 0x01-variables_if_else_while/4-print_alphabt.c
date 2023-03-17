@@ -8,11 +8,10 @@
 int main(void)
 {
 	int alpha;
-	for (alpha = 'a'; alpha <= 'z'; alpha++)
 
+	for (alpha = 'a'; alpha <= 'z'; alpha++)
 	{
 		if (alpha == 'e' || alpha == 'q')
-
 		{
 			continue;
 		}
