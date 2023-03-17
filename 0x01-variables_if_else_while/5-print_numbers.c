@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include <ctype.h>
+#include<ctype.h>
 /**
 *main - Prints all single digits of base 10 followed by new line
 *
@@ -9,10 +9,10 @@ int main(void)
 {
 	int num;
 
-	for (num='0'; num < 10; num++)
+	for (num = '0'; num < 10; num++)
 	{
 		putchar(num);
 	}
 	putchar('\n');
-	return(0);
-} 
+	return (0);
+}
