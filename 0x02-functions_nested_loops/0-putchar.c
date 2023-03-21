@@ -1,6 +1,6 @@
 #include "main.h"
 /**
-*main - Prints all single digits of base 16
+*main - Prints _putchar
 *
 *Return: returns 0
 */
