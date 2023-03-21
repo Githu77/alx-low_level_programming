@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include <string.h>
+#include "main.h"
 /**
 *main - Prints all single digits of base 16
 *
@@ -8,10 +7,14 @@
 
 int main(void)
 {
-	char pt[9];
-
-	strcpy(pt, "_putchar");
-	puts(pt);
-	puts("\n");
+	_putchar('_');
+	_putchar('p');
+	_putchar('u');
+	_putchar('t');
+	_putchar('c');
+	_putchar('h');
+	_putchar('a');
+	_putchar('r');
+	_putchar('\n');
 	return (0);
 }
