@@ -13,7 +13,7 @@ for (dig = 0; dig <= n; dig++)
 {
 _putchar('0');
 
-for (mul = 1; mult <= n; mult++)
+for (mul = 1; mul <= n; mul++)
 {
 _putchar(',');
 _putchar(' ');
