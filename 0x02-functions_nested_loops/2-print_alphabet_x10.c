@@ -6,7 +6,7 @@ void print_alphabet_x10(void)
 {
 	char alphas;
 	char times;
-	
+
 	for (times = '0'; times <= '9'; times++)
 	{
 
