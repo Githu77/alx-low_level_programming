@@ -6,19 +6,23 @@
 */
 void times_table(void)
 {
-	int cons = 0;
-	int mul = 0;
-	int ans;
+int dig, mult, res;
+for (dig = 0; dig <= 9; dig++)
+{
+_putchar('0');
 
-	while (cons <= 9)
-	{
-		while (mul <= 9)
-		{
-			ans = cons * mul;
-			mul++;
-			_putchar(ans);
-		}
-		cons++;
-		_putchar('\n');
-	}
+for (mult = 1; mult <= 9; mult++)
+{
+_putchar(',');
+_putchar(' ');
+res = dig * mult;
+if (res <= 9)
+_putchar(' ');
+else
+_putchar((res / 10) + '0');
+
+_putchar((res % 10) + '0');
+}
+_putchar('\n');
+}
 }
