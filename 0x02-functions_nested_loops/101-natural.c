@@ -7,7 +7,9 @@
 
 int main(void)
 {
-	int nums, d7;
+	int nums;
+
+	int d7 = 0;
 
 	for (nums = 1; nums < 1024; nums++)
 	{
