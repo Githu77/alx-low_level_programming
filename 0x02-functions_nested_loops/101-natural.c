@@ -7,7 +7,7 @@
 
 int main(void)
 {
-	int nums, d3, d5, d7;
+	int nums, d7;
 
 	for (nums = 1; nums <= 1023; nums++)
 	{
