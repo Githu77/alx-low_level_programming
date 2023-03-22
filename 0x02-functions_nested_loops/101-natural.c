@@ -21,4 +21,5 @@ int main(void)
 		}
 	}
 	printf("Numbers are %d\n", d7);
+	return (0);
 }
