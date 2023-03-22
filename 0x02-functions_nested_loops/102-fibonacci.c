@@ -1,7 +1,6 @@
 #include <stdio.h>
 /**
-*main - prints out first 50
-*fibonacci suit numbers
+*main - prints out first 50 numbers
 *Return: return 0
 */
 int main(void)
