@@ -9,7 +9,7 @@ int main(void)
 {
 	int nums, d7;
 
-	for (nums = 1; nums <= 1023; nums++)
+	for (nums = 1; nums < 1024; nums++)
 	{
 		int d5 = nums % 5;
 
@@ -20,6 +20,6 @@ int main(void)
 			d7 = d7 + nums;
 		}
 	}
-	printf("Numbers are %d\n", d7);
+	printf("%d\n", d7);
 	return (0);
 }
