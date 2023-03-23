@@ -5,11 +5,10 @@
 */
 void more_numbers(void)
 {
-	int nums;
+	int nums, nums1;
 
 	for (nums = 0; nums < 10; nums++)
 	{
-		int nums1;
 
 		for (nums1 = 0; nums1 <= 14; nums1++)
 		{
