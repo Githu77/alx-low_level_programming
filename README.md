@@ -1,1 +1,1 @@
-More tasks on C functions and nested loops
+deep look into C
