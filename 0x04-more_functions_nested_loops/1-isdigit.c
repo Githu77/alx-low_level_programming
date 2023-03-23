@@ -6,11 +6,9 @@
 */
 int _isdigit(int c)
 {	
-	int lis;
-	
-	for (lis = 0; lis <= 9; lis++)
+	for ( c= 0; c <= 9; c++)
 	{
-		if ((lis >= 'a' || lis <= 'z') || (lis >= 'A' || lis <= 'Z'))
+		if ((c >= 'a' || c <= 'z') || (c >= 'A' || c <= 'Z'))
 		{
 			return (0);
 		}
