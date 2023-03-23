@@ -16,11 +16,8 @@ void more_numbers(void)
 			{
 				_putchar((nums1 / 10) + '0');
 			}
-			else
-			{
 				_putchar((nums1 % 10) + '0');
 			}
 			_putchar(10);
 		}
-	}
 }
