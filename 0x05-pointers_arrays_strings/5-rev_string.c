@@ -40,7 +40,7 @@ int _strlen(char *s)
 }
 
 /**
-*swap_int - swaps the content of the pointers
+*swap_char - swaps the content of the pointers
 *@a: first pointer
 *@b: second pointer
 *Return : returns nothing
