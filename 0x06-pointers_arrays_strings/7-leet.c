@@ -1,22 +1,22 @@
 #include "main.h"
 /**
-* leet - encodes a string
-*@str: string to encoded
-*Return: returns encoded string
+* leet -  encode a string
+*@str:string to encoded
+*Return:returns encoded string
 */
 
 char *leet(char *str)
 {
-	int i = 0, j;
+	int index1 = 0, index2;
 	char leet[8] = {'O', 'L', '?', 'E', 'A', '?', '?', 'T'};
 
-	while (str[++i])
+	while (str[++index1])
 	{
-		for (j = 0; j <= 7; j++)
+		for (index2 = 0; index2 <= 7; index2++)
 		{
-			if (str[i] == leet[j] ||
-			 str[i] - 32 == leet[j])
-				str[i] = j + '0';
+			if (str[index1] == leet[index2] ||
+			 str[index1] - 32 == leet[index2])
+				str[index1] = index2 + '0';
 		}
 	}
 	return (str);
