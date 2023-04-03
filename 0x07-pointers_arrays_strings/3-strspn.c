@@ -27,12 +27,14 @@ unsigned int _strspn(char *s, char *accept)
 				break;
 			}
 			x++;
+
 			if (s[i] != accept[x])
 			{
 				return (z);
 			}
 		}
 		i++;
+
 	}
 	return (z);
 }
