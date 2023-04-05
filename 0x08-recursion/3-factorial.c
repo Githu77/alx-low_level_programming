@@ -2,9 +2,9 @@
 /**
 *factorial - gives the factorial of an int
 *@n: the int
-*
-*
-*
+*Return: returns 1 if n is equal to 0, or
+*returns -1 if n is less than 0, or
+*return the factorial of an int
 */
 int factorial(int n)
 {
@@ -20,7 +20,7 @@ int factorial(int n)
 	}
 	else
 	{
-		i = factorial(n -1);
+		i = factorial(n - 1);
 		return (i * n);
 	}
 }
