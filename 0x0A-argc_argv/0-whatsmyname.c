@@ -3,7 +3,7 @@
 *main - writes name of program
 *@argc: counts arguments in the function
 *@argv: list or array of arguments in the function
-*
+*Return: returns 0
 *
 *
 */
