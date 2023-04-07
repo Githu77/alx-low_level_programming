@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
 			cents = cents - 5;
 			continue;
 		}
-		else ((cents - 2) >= 0);
+		else if ((cents - 2) >= 0)
 		{
 			cents = cents - 2;
 			continue;
