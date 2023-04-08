@@ -6,15 +6,9 @@
 */
 int _isdigit(int c)
 {
-	for (c = 0; c <= 9; c++)
-	{
-		if ((c >= 'a' || c <= 'z') && (c >= 'A' || c <= 'Z'))
-		{
-			return (0);
-		}
-		else
-		{
-			return (1);
-		}
-	}
+	if ((c >= 48) && (c <= 57))
+
+	return (1);
+
+	return (0);
 }
