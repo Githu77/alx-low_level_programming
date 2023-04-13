@@ -11,7 +11,8 @@
 void *malloc_checked(unsigned int b)
 {
 	void *point = malloc(b);
-	for (point == NULL)
+
+	if (point == NULL)
 	{
 		exit(98);
 	}
