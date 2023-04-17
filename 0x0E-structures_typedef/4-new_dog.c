@@ -15,8 +15,8 @@ void str_cpy(char *dst, char *src)
 	while (*src != '\0')
 	{
 		*dst = *src;
-		dst;
-		src;
+		dst++;
+		src++;
 	}
 	*dst = '\0';
 }
