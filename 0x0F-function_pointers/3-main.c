@@ -1,5 +1,7 @@
-#include  "3-calc.h"
+#include <stdlib.h>
 #include <stdio.h>
+#include "3-calc.h"
+
 /**
 *main - does add, subtract, division and multiplication
 *@argc: no of commands
@@ -10,63 +12,33 @@
 *
 *
 */
-int main(int argc, char *argv[])
+int main(int argc, char **argv)
 {
 	int num1, num2, result;
-	char op;
+	char *op;
+	int (*f)(int, int);
 
 	if (argc != 4)
 	{
 		printf("Error\n");
-		return (98);
+		exit(98);
 	}
 
 	num1 = atoi(argv[1]);
+	op = argv[2];
 	num2 = atoi(argv[3]);
-	op = *argv[2];
 
-	result = calculate(num1, num2, op);
+	f = get_op_func(op);
+
+	if (f == NULL)
+	{
+		printf("Error\n");
+		exit(99);
+	}
+
+	result = f(num1, num2);
 
 	printf("%d\n", result);
-	return (0);
-}
 
-/**
-*calculate - handles different operators
-*@num1: first number
-*@num2: second number
-*@op: option selected
-*Return: result or error
-*
-*
-*
-*/
-int calculate(int num1, int num2, char op)
-{
-	switch (op)
-	{
-		case '+':
-			return (num1 + num2);
-		case '-':
-			return (num1 - num2);
-		case '*':
-			return (num1 * num2);
-		case '/':
-		if (num2 == 0)
-		{
-			printf("Error\n");
-			exit(100);
-		}
-		return (num1 / num2);
-		case '%':
-		if (num2 == 0)
-		{
-			printf("Error\n");
-			exit(100);
-		}
-		return (num1 % num2);
-		default:
-		    printf("Error\n");
-		    exit(99);
-	}
+	return (0);
 }
