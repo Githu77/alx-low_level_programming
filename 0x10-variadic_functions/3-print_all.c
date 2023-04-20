@@ -1,4 +1,4 @@
-#include "3-printall.h"
+#include "variadic_functions.h"
 
 
 /**
@@ -63,8 +63,6 @@ void print_all(const char * const format, ...)
 {
 	va_list args;
 
-	va_start(args, format);
-
 	arg_printer_t arg_printers[] = {
 	{'c', &print_char},
 	{'i', &print_int},
@@ -74,6 +72,8 @@ void print_all(const char * const format, ...)
 	};
 
 	int i = 0;
+
+	va_start(args, format);
 
 	while (format && format[i])
 	{
