@@ -1,54 +1,51 @@
 #include "variadic_functions.h"
 
+
 /**
- * print_char - prints a char
- * @args: argument list containing a char
- *
- * Return: void
+ * print_char - Prints a char
+ * @args: contain the char to print
  */
 void print_char(va_list *args)
 {
-	printf("%c", va_arg(*args, int));
+	int c = va_arg(*args, int);
+
+	printf("%c", c);
 }
 
 /**
- * print_int - prints an integer
- * @args: argument list containing an integer
- *
- * Return: void
+ * print_int - Prints an int
+ * @args: contain the int to print
  */
 void print_int(va_list *args)
 {
-	printf("%d", va_arg(*args, int));
+	int n = va_arg(*args, int);
+
+	printf("%d", n);
 }
 
 /**
- * print_float - prints a float
- * @args: argument list containing a float
- *
- * Return: void
+ * print_float - Prints a float
+ * @args: contain the float to print
  */
 void print_float(va_list *args)
 {
-	printf("%f", va_arg(*args, double));
+	float f = va_arg(*args, double);
+
+	printf("%f", f);
 }
 
 /**
- * print_string - prints a string
- * @args: argument list containing a string
- *
- * Return: void
+ * print_string - Prints a string
+ * @args: contain the string to print
  */
 void print_string(va_list *args)
 {
-	char *str;
+	char *s = va_arg(*args, char *);
 
-	str = va_arg(*args, char *);
-
-	if (str == NULL)
-		str = "(nil)";
-
-	printf("%s", str);
+	if (s == NULL)
+		printf("(nil)");
+	else
+		printf("%s", s);
 }
 
 
