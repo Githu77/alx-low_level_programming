@@ -2,57 +2,52 @@
 
 
 /**
-*print_char - prints character
-*@args: arguments
-*
-*
-*/
+ * print_char - Prints a char
+ * @args: contain the char to print
+ */
 void print_char(va_list *args)
 {
-	printf("%c", va_arg(*args, int));
+	int c = va_arg(*args, int);
+
+	printf("%c", c);
 }
 
 /**
-*print_int - prints integer
-*@args: arguments
-*
-*
-*/
+ * print_int - Prints an int
+ * @args: contain the int to print
+ */
 void print_int(va_list *args)
 {
-	printf("%d", va_arg(*args, int));
+	int n = va_arg(*args, int);
+
+	printf("%d", n);
 }
 
 /**
-*print_float - prints float
-*@args: arguments
-*
-*
-*/
+ * print_float - Prints a float
+ * @args: contain the float to print
+ */
 void print_float(va_list *args)
 {
-	printf("%f", va_arg(*args, double));
+	float f = va_arg(*args, double);
+
+	printf("%f", f);
 }
 
 /**
-*print_string - prints string
-*@args: arguments
-*
-*
-*/
+ * print_string - Prints a string
+ * @args: contain the string to print
+ */
 void print_string(va_list *args)
 {
 	char *s = va_arg(*args, char *);
 
 	if (s == NULL)
-	{
 		printf("(nil)");
-	}
 	else
-	{
 		printf("%s", s);
-	}
 }
+
 
 /**
 *print_all - prints all types
