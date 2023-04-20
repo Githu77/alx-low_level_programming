@@ -1,6 +1,4 @@
-#include "variadic_functions.h"
-
-
+#include "3-printall.h"
 
 
 /**
