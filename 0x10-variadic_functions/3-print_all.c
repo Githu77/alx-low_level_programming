@@ -38,15 +38,16 @@ void print_float(va_list *args)
  * print_string - Prints a string
  * @args: contain the string to print
  */
+
 void print_string(va_list *args)
 {
-	char *s = va_arg(*args, char *);
+  char *s = va_arg(*args, char *);
 
-	if (s == NULL)
-		printf("(nil)");
-	else
-		printf("%s", s);
+  s = (s == NULL) ? "(nil)" : s;
+
+  printf("%s", s);
 }
+
 
 
 /**
