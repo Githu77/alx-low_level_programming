@@ -41,11 +41,11 @@ void print_float(va_list *args)
 
 void print_string(va_list *args)
 {
-  char *s = va_arg(*args, char *);
+	char *s = va_arg(*args, char *);
 
-  s = (s == NULL) ? "(nil)" : s;
+	s = (s == NULL) ? "(nil)" : s;
 
-  printf("%s", s);
+	printf("%s", s);
 }
 
 
