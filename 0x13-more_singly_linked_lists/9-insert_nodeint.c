@@ -1,6 +1,5 @@
 #include "lists.h"
-#include <stdio.h>
-#include <stdlib.h>
+
 /**
 *insert_nodeint_at_index - inserts new node at a point in list
 *@head: points to pointer to the first node of list
@@ -14,34 +13,55 @@
 */
 listint_t *insert_nodeint_at_index(listint_t **head, unsigned int idx, int n)
 {
-	listint_t *n_node, *f_node;
-	unsigned int i;
+	listint_t *new_node = NULL;
+	listint_t *previous_node = NULL;
+	unsigned int i = 0;
 
-	if (!head)
+	new_node = malloc(sizeof(listint_t));
+	if (new_node == NULL || idx > listint_len(*head))
 	{
+		free(new_node);
 		return (NULL);
 	}
-	if (idx == 0)
+	new_node->n = n;
+	new_node->next = NULL;
+	while (head != NULL)
 	{
-		n_node = add_nodeint(head, n);
-		return (n_node);
+		if (i == idx)
+		{
+			if (i == 0)
+			{
+				new_node->next = *head;
+				*head = new_node;
+				return (new_node);
+			}
+			new_node->next = previous_node->next;
+			previous_node->next = new_node;
+			return (new_node);
+		}
+		else if ((i + 1) == idx)
+			previous_node = *head;
+		head = &((*head)->next);
+		i++;
 	}
-	f_node = *head;
-	for (i = 0; i < idx - 1 && f_node; i++)
+	return (NULL);
+}
+
+/**
+ * listint_len - counts the number of nodes in a linked list
+ * @h: head of the list
+ *
+ * Return: the number of elements
+ */
+size_t listint_len(const listint_t *h)
+{
+	const listint_t *cursor = h;
+	size_t count = 0;
+
+	while (cursor != NULL)
 	{
-		f_node = f_node->next;
+		count += 1;
+		cursor = cursor->next;
 	}
-	if (i != idx - 1)
-	{
-		return (NULL);
-	}
-	n_node = malloc(sizeof(listint_t));
-	if (!n_node)
-	{
-		return (NULL);
-	}
-	n_node->n = n;
-	n_node->next = f_node->next;
-	f_node->next = n_node;
-	return (n_node);
+	return (count);
 }
