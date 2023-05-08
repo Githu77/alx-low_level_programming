@@ -23,6 +23,7 @@ int main(int argc, char **argv)
 		return (97);
 
 	fd_from = open(argv[1], O_RDONLY);
+
 	if (fd_from == -1)
 		print_error("Error: Can't read from file", argv[1], fd_from, -1);
 		return (98);
