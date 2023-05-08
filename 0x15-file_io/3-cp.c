@@ -2,7 +2,7 @@
 #define BUFFER_SIZE 1024
 
 /**
-*main: copy text from one file to another
+*main - copy text from one file to another
 *@argc: no. of  arguments
 *@argv: arguments
 *Return: 0 or error
@@ -70,12 +70,12 @@ int main(int argc, char **argv)
 }
 
 /**
- * print_error - Prints an error message to the standard error output.
- * @message: The message to print.
- * @filename: The name of the file.
- * @fd_from: The file descriptor of the source file.
- * @fd_to: The file descriptor of the destination file.
- */
+* print_error - shows error.
+* @message: error message
+* @filename: file name
+* @fd_from: desriptor of source file
+* @fd_to: descriptor of destination file
+*/
 void print_error(char *message, char *filename, int fd_from, int fd_to)
 {
     dprintf(STDERR_FILENO, "%s %s", message, filename);
