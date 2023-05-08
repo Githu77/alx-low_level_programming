@@ -72,10 +72,10 @@ int main(int argc, char **argv)
 */
 void print_error(char *message, char *filename, int fd_from, int fd_to)
 {
-	dprintf(STDERR_FILENO, "%s %s", message, filename);
-	if (fd_from != -1)
-		close(fd_from);
-	if (fd_to != -1)
-		close(fd_to);
-		dprintf(STDERR_FILENO, "\n");
+dprintf(STDERR_FILENO, "%s %s", message, filename);
+if (fd_from != -1)
+close(fd_from);
+if (fd_to != -1)
+close(fd_to);
+dprintf(STDERR_FILENO, "\n");
 }
