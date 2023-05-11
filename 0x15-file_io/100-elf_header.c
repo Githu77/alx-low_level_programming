@@ -150,41 +150,32 @@ void print_elf_osabi(unsigned char *e_ident)
 
 void print_elf_abi(unsigned char *e_ident)
 {
-	if (e_ident[EI_ABIVERSION] == 0) {
-		printf("  ABI Version:                       unspecified\n");
-	} else {
-		printf("  ABI Version:                       %d\n",
-		       e_ident[EI_ABIVERSION]);
-	}
+	printf("  ABI Version:                       %d\n",
+	       e_ident[EI_ABIVERSION]);
 }
 
 
 void print_elf_type(unsigned int e_type, unsigned char *e_ident)
 {
+	const char *types[] = {
+		"NONE (None)",
+		"REL (Relocatable file)",
+		"EXEC (Executable file)",
+		"DYN (Shared object file)",
+		"CORE (Core file)"
+	};
+
 	if (e_ident[EI_DATA] == ELFDATA2MSB)
 		e_type >>= 8;
 
-	printf("  Type:                              ");
-
-	switch (e_type)
-	{
-	case ET_NONE:
-		printf("NONE (None)\n");
-		break;
-	case ET_REL:
-		printf("REL (Relocatable file)\n");
-		break;
-	case ET_EXEC:
-		printf("EXEC (Executable file)\n");
-		break;
-	case ET_DYN:
-		printf("DYN (Shared object file)\n");
-		break;
-	case ET_CORE:
-		printf("CORE (Core file)\n");
-		break;
-	default:
-		printf("<unknown: %x>\n", e_type);
+	if (e_type >= ET_LOPROC && e_type <= ET_HIPROC) {
+		printf("Processor specific: (%x)\n", e_type);
+	} else if (e_type >= ET_LOOS && e_type <= ET_HIOS) {
+		printf("OS-specific: (%x)\n", e_type);
+	} else if (e_type < ET_NUM) {
+		printf("Type: %s\n", types[e_type]);
+	} else {
+		printf("Unknown type (%x)\n", e_type);
 	}
 }
 
