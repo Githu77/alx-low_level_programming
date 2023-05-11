@@ -108,43 +108,31 @@ void print_elf_version(unsigned char *e_ident)
 
 void print_elf_osabi(unsigned char *e_ident)
 {
-	printf("  OS/ABI:                            ");
+	 printf("  OS/ABI:                            ");
 
-	switch (e_ident[EI_OSABI])
-	{
-	case ELFOSABI_NONE:
-		printf("UNIX - System V\n");
-		break;
-	case ELFOSABI_HPUX:
-		printf("UNIX - HP-UX\n");
-		break;
-	case ELFOSABI_NETBSD:
-		printf("UNIX - NetBSD\n");
-		break;
-	case ELFOSABI_LINUX:
-		printf("UNIX - Linux\n");
-		break;
-	case ELFOSABI_SOLARIS:
-		printf("UNIX - Solaris\n");
-		break;
-	case ELFOSABI_IRIX:
-		printf("UNIX - IRIX\n");
-		break;
-	case ELFOSABI_FREEBSD:
-		printf("UNIX - FreeBSD\n");
-		break;
-	case ELFOSABI_TRU64:
-		printf("UNIX - TRU64\n");
-		break;
-	case ELFOSABI_ARM:
-		printf("ARM\n");
-		break;
-	case ELFOSABI_STANDALONE:
-		printf("Standalone App\n");
-		break;
-	default:
-		printf("<unknown: %x>\n", e_ident[EI_OSABI]);
-	}
+    if (e_ident[EI_OSABI] == ELFOSABI_NONE) {
+        printf("UNIX - System V\n");
+    } else if (e_ident[EI_OSABI] == ELFOSABI_HPUX) {
+        printf("UNIX - HP-UX\n");
+    } else if (e_ident[EI_OSABI] == ELFOSABI_NETBSD) {
+        printf("UNIX - NetBSD\n");
+    } else if (e_ident[EI_OSABI] == ELFOSABI_LINUX) {
+        printf("UNIX - Linux\n");
+    } else if (e_ident[EI_OSABI] == ELFOSABI_SOLARIS) {
+        printf("UNIX - Solaris\n");
+    } else if (e_ident[EI_OSABI] == ELFOSABI_IRIX) {
+        printf("UNIX - IRIX\n");
+    } else if (e_ident[EI_OSABI] == ELFOSABI_FREEBSD) {
+        printf("UNIX - FreeBSD\n");
+    } else if (e_ident[EI_OSABI] == ELFOSABI_TRU64) {
+        printf("UNIX - TRU64\n");
+    } else if (e_ident[EI_OSABI] == ELFOSABI_ARM) {
+        printf("ARM\n");
+    } else if (e_ident[EI_OSABI] == ELFOSABI_STANDALONE) {
+        printf("Standalone App\n");
+    } else {
+        printf("<unknown: %x>\n", e_ident[EI_OSABI]);
+    }
 }
 
 
@@ -207,12 +195,11 @@ void print_elf_entry(unsigned long int e_entry, unsigned char *e_ident)
 void close_elf(int elf)
 {
 	if (close(elf) == -1)
-    {
-        perror("Error closing file descriptor");
-        exit(EXIT_FAILURE);
-    }
-
-    printf("File descriptor %d closed successfully.\n", elf);
+	{
+		dprintf(STDERR_FILENO,
+			"Error: Can't close fd %d\n", elf);
+		exit(98);
+	}
 }
 
 
