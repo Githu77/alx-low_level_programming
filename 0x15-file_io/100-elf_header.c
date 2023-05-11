@@ -157,45 +157,43 @@ void print_elf_abi(unsigned char *e_ident)
 
 void print_elf_type(unsigned int e_type, unsigned char *e_ident)
 {
-	const char *types[] = {
-		"NONE (None)",
-		"REL (Relocatable file)",
-		"EXEC (Executable file)",
-		"DYN (Shared object file)",
-		"CORE (Core file)"
-	};
-
 	if (e_ident[EI_DATA] == ELFDATA2MSB)
 		e_type >>= 8;
 
-	if (e_type >= ET_LOPROC && e_type <= ET_HIPROC) {
-		printf("Processor specific: (%x)\n", e_type);
-	} else if (e_type >= ET_LOOS && e_type <= ET_HIOS) {
-		printf("OS-specific: (%x)\n", e_type);
-	} else if (e_type < ET_NUM) {
-		printf("Type: %s\n", types[e_type]);
-	} else {
-		printf("Unknown type (%x)\n", e_type);
+	printf("  Type:                              ");
+
+	switch (e_type)
+	{
+	case ET_NONE:
+		printf("NONE (None)\n");
+		break;
+	case ET_REL:
+		printf("REL (Relocatable file)\n");
+		break;
+	case ET_EXEC:
+		printf("EXEC (Executable file)\n");
+		break;
+	case ET_DYN:
+		printf("DYN (Shared object file)\n");
+		break;
+	case ET_CORE:
+		printf("CORE (Core file)\n");
+		break;
+	default:
+		printf("<unknown: %x>\n", e_type);
 	}
 }
 
 
 void print_elf_entry(unsigned long int e_entry, unsigned char *e_ident)
 {
-	printf("  Entry point address:               ");
+	 printf("  Entry point address:               %#lx\n", e_entry);
 
-	if (e_ident[EI_DATA] == ELFDATA2MSB)
-	{
-		e_entry = ((e_entry << 8) & 0xFF00FF00) |
-			  ((e_entry >> 8) & 0xFF00FF);
-		e_entry = (e_entry << 16) | (e_entry >> 16);
-	}
-
-	if (e_ident[EI_CLASS] == ELFCLASS32)
-		printf("%#x\n", (unsigned int)e_entry);
-
-	else
-		printf("%#lx\n", e_entry);
+    if (e_ident[EI_DATA] == ELFDATA2MSB) {
+        uint32_t entry32 = (e_entry >> 24) | ((e_entry >> 8) & 0xFF00) |
+                           ((e_entry << 8) & 0xFF0000) | (e_entry << 24);
+        printf("                                     %#x\n", entry32);
+    }
 }
 
 
