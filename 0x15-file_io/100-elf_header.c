@@ -150,8 +150,12 @@ void print_elf_osabi(unsigned char *e_ident)
 
 void print_elf_abi(unsigned char *e_ident)
 {
-	printf("  ABI Version:                       %d\n",
-	       e_ident[EI_ABIVERSION]);
+	if (e_ident[EI_ABIVERSION] == 0) {
+		printf("  ABI Version:                       unspecified\n");
+	} else {
+		printf("  ABI Version:                       %d\n",
+		       e_ident[EI_ABIVERSION]);
+	}
 }
 
 
