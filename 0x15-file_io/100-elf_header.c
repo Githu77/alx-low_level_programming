@@ -1,6 +1,15 @@
 #include "main.h"
 
-
+/**
+*check_elf - Checks for ELF.
+*@e_ident: pointer to EFL magic numbers
+*
+*
+*
+*
+*
+*
+*/
 void check_elf(unsigned char *e_ident)
 {
 	int index;
@@ -18,24 +27,46 @@ void check_elf(unsigned char *e_ident)
 	}
 }
 
+/**
+*print_elf_magic - writes magic numbers
+*@e_ident: pointer to magic numbers
+*
+*
+*
+*
+*
+*
+*
+*/
 
 void print_elf_magic(unsigned char *e_ident)
 {
-	int index;
+	int i;
 
 	printf("  Magic:   ");
 
-	for (index = 0; index < EI_NIDENT; index++)
+	for (i = 0; i < EI_NIDENT; i++)
 	{
-		printf("%02x", e_ident[index]);
+		printf("%02x", e_ident[i]);
 
-		if (index == EI_NIDENT - 1)
+		if (i == EI_NIDENT - 1)
 			printf("\n");
 		else
 			printf(" ");
 	}
 }
 
+/**
+*print_elf_class - writes ELF's class
+*@e_ident: pointer to class
+*
+*
+*
+*
+*
+*
+*
+*/
 
 void print_elf_class(unsigned char *e_ident)
 {
@@ -57,6 +88,17 @@ void print_elf_class(unsigned char *e_ident)
 	}
 }
 
+/**
+*print_elf_data - writes the ELF's data
+*@e_ident: pointer to data
+*
+*
+*
+*
+*
+*
+*
+*/
 
 void print_elf_data(unsigned char *e_ident)
 {
@@ -73,11 +115,21 @@ void print_elf_data(unsigned char *e_ident)
 	printf("<unknown: %x>\n", data_val);
 
 	if (data_type)
-	printf("  Data:                              %s\n", 		data_type);
+	printf("  Data:                              %s\n",		data_type);
 
 }
 
-
+/**
+*print_elf_version - writes the ELF's version
+*@e_ident: pointer to version data
+*
+*
+*
+*
+*
+*
+*
+*/
 void print_elf_version(unsigned char *e_ident)
 {
 	printf("  Version:                           %d", e_ident[EI_VERSION]);
@@ -88,7 +140,17 @@ void print_elf_version(unsigned char *e_ident)
 	printf("\n");
 }
 
-
+/**
+*print_elf_osabi - writes the ELF's ABI/OS data
+*@e_ident: pointer to data
+*
+*
+*
+*
+*
+*
+*
+*/
 void print_elf_osabi(unsigned char *e_ident)
 {
 	 printf("  OS/ABI:                            ");
@@ -139,14 +201,34 @@ void print_elf_osabi(unsigned char *e_ident)
 	}
 }
 
-
+/**
+*print_elf_abi - writes the ELF's ABI versionata
+*@e_ident: pointer to data
+*
+*
+*
+*
+*
+*
+*
+*/
 void print_elf_abi(unsigned char *e_ident)
 {
 	printf("  ABI Version:                       %d\n",
 	       e_ident[EI_ABIVERSION]);
 }
 
-
+/**
+*print_elf_type - writes the ELF's type
+*@e_ident: pointer to data
+*@e_type: ELF type
+*
+*
+*
+*
+*
+*
+*/
 void print_elf_type(unsigned int e_type, unsigned char *e_ident)
 {
 	if (e_ident[EI_DATA] == ELFDATA2MSB)
@@ -176,7 +258,18 @@ void print_elf_type(unsigned int e_type, unsigned char *e_ident)
 	}
 }
 
-
+/**
+*print_elf_entry - writes the ELF's entry
+*@e_entry: address to ELF entry
+*@e_ident: pointer to data
+*
+*
+*
+*
+*
+*
+*
+*/
 void print_elf_entry(unsigned long int e_entry, unsigned char *e_ident)
 {
 	printf("  Entry point address:               ");
@@ -195,7 +288,17 @@ void print_elf_entry(unsigned long int e_entry, unsigned char *e_ident)
 		printf("%#lx\n", e_entry);
 }
 
-
+/**
+*close_elf - closes ELF
+*@elf: ELF description
+*
+*
+*
+*
+*
+*
+*
+*/
 void close_elf(int elf)
 {
 	if (close(elf) == -1)
@@ -206,7 +309,17 @@ void close_elf(int elf)
 	}
 }
 
-
+/**
+*main - main function
+*@argc: number of arguments
+*@argv: array of arguments
+*Return: 0
+*
+*
+*
+*
+*
+*/
 int main(int __attribute__((__unused__)) argc, char *argv[])
 {
 	Elf64_Ehdr *header;
