@@ -5,7 +5,6 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 void check_elf(unsigned char *e_ident);
 void print_magic(unsigned char *e_ident);
@@ -17,7 +16,6 @@ void print_osabi(unsigned char *e_ident);
 void print_type(unsigned int e_type, unsigned char *e_ident);
 void print_entry(unsigned long int e_entry, unsigned char *e_ident);
 void close_elf(int elf);
-
 
 
 void check_elf(unsigned char *e_ident)
@@ -38,17 +36,16 @@ void check_elf(unsigned char *e_ident)
 }
 
 
-
 void print_magic(unsigned char *e_ident)
 {
-	int i;
+	int index;
 
 	printf("ELF Header:\n");
 	printf("  Magic:   ");
 
-	for (i = 0; i < EI_NIDENT; i++)
+	for (index = 0; index < EI_NIDENT; index++)
 	{
-		printf("%02x ", e_ident[i]);
+		printf("%02x ", e_ident[index]);
 	}
 
 	printf("\n");
@@ -78,129 +75,149 @@ void print_class(unsigned char *e_ident)
 
 void print_data(unsigned char *e_ident)
 {
-    const char *data_type = NULL;
-    const unsigned char data_val = e_ident[EI_DATA];
+	printf("  Data:                              ");
 
-    if (data_val == ELFDATANONE)
-        data_type = "none";
-    else if (data_val == ELFDATA2LSB)
-        data_type = "2's complement, little endian";
-    else if (data_val == ELFDATA2MSB)
-        data_type = "2's complement, big endian";
-    else
-        printf("<unknown: %x>\n", data_val);
-
-    if (data_type)
-        printf("  Data:                              %s\n", data_type);
+	switch (e_ident[EI_DATA])
+	{
+	case ELFDATANONE:
+		printf("none\n");
+		break;
+	case ELFDATA2LSB:
+		printf("2's complement, little endian\n");
+		break;
+	case ELFDATA2MSB:
+		printf("2's complement, big endian\n");
+		break;
+	default:
+		printf("<unknown: %x>\n", e_ident[EI_CLASS]);
+	}
 }
-
 
 
 void print_version(unsigned char *e_ident)
 {
-    printf("  Version:                           %d", e_ident[EI_VERSION]);
+	printf("  Version:                           %d",
+	       e_ident[EI_VERSION]);
 
-    if (e_ident[EI_VERSION] == EV_CURRENT)
-        printf(" (current)\n");
-    else
-        printf("\n");
+	switch (e_ident[EI_VERSION])
+	{
+	case EV_CURRENT:
+		printf(" (current)\n");
+		break;
+	default:
+		printf("\n");
+		break;
+	}
 }
-
 
 
 void print_osabi(unsigned char *e_ident)
 {
-     printf("  OS/ABI:                            ");
+	printf("  OS/ABI:                            ");
 
-    if (e_ident[EI_OSABI] == ELFOSABI_NONE) {
-        printf("UNIX - System V\n");
-    } else if (e_ident[EI_OSABI] == ELFOSABI_HPUX) {
-        printf("UNIX - HP-UX\n");
-    } else if (e_ident[EI_OSABI] == ELFOSABI_NETBSD) {
-        printf("UNIX - NetBSD\n");
-    } else if (e_ident[EI_OSABI] == ELFOSABI_LINUX) {
-        printf("UNIX - Linux\n");
-    } else if (e_ident[EI_OSABI] == ELFOSABI_SOLARIS) {
-        printf("UNIX - Solaris\n");
-    } else if (e_ident[EI_OSABI] == ELFOSABI_IRIX) {
-        printf("UNIX - IRIX\n");
-    } else if (e_ident[EI_OSABI] == ELFOSABI_FREEBSD) {
-        printf("UNIX - FreeBSD\n");
-    } else if (e_ident[EI_OSABI] == ELFOSABI_TRU64) {
-        printf("UNIX - TRU64\n");
-    } else if (e_ident[EI_OSABI] == ELFOSABI_ARM) {
-        printf("ARM\n");
-    } else if (e_ident[EI_OSABI] == ELFOSABI_STANDALONE) {
-        printf("Standalone App\n");
-    } else {
-        printf("<unknown: %x>\n", e_ident[EI_OSABI]);
-    }
+	switch (e_ident[EI_OSABI])
+	{
+	case ELFOSABI_NONE:
+		printf("UNIX - System V\n");
+		break;
+	case ELFOSABI_HPUX:
+		printf("UNIX - HP-UX\n");
+		break;
+	case ELFOSABI_NETBSD:
+		printf("UNIX - NetBSD\n");
+		break;
+	case ELFOSABI_LINUX:
+		printf("UNIX - Linux\n");
+		break;
+	case ELFOSABI_SOLARIS:
+		printf("UNIX - Solaris\n");
+		break;
+	case ELFOSABI_IRIX:
+		printf("UNIX - IRIX\n");
+		break;
+	case ELFOSABI_FREEBSD:
+		printf("UNIX - FreeBSD\n");
+		break;
+	case ELFOSABI_TRU64:
+		printf("UNIX - TRU64\n");
+		break;
+	case ELFOSABI_ARM:
+		printf("ARM\n");
+		break;
+	case ELFOSABI_STANDALONE:
+		printf("Standalone App\n");
+		break;
+	default:
+		printf("<unknown: %x>\n", e_ident[EI_OSABI]);
+	}
 }
-
 
 
 void print_abi(unsigned char *e_ident)
 {
-	if (e_ident[EI_ABIVERSION] == 0) {
-		printf("  ABI Version:                       unspecified\n");
-	} else {
-		printf("  ABI Version:                       %d\n",
-		       e_ident[EI_ABIVERSION]);
-	}
+	printf("  ABI Version:                       %d\n",
+	       e_ident[EI_ABIVERSION]);
 }
-
 
 
 void print_type(unsigned int e_type, unsigned char *e_ident)
 {
-	const char *types[] = {
-		"NONE (None)",
-		"REL (Relocatable file)",
-		"EXEC (Executable file)",
-		"DYN (Shared object file)",
-		"CORE (Core file)"
-	};
-
 	if (e_ident[EI_DATA] == ELFDATA2MSB)
 		e_type >>= 8;
 
-	if (e_type >= ET_LOPROC && e_type <= ET_HIPROC) {
-		printf("Processor specific: (%x)\n", e_type);
-	} else if (e_type >= ET_LOOS && e_type <= ET_HIOS) {
-		printf("OS-specific: (%x)\n", e_type);
-	} else if (e_type < ET_NUM) {
-		printf("Type: %s\n", types[e_type]);
-	} else {
-		printf("Unknown type (%x)\n", e_type);
+	printf("  Type:                              ");
+
+	switch (e_type)
+	{
+	case ET_NONE:
+		printf("NONE (None)\n");
+		break;
+	case ET_REL:
+		printf("REL (Relocatable file)\n");
+		break;
+	case ET_EXEC:
+		printf("EXEC (Executable file)\n");
+		break;
+	case ET_DYN:
+		printf("DYN (Shared object file)\n");
+		break;
+	case ET_CORE:
+		printf("CORE (Core file)\n");
+		break;
+	default:
+		printf("<unknown: %x>\n", e_type);
 	}
 }
 
 
-
 void print_entry(unsigned long int e_entry, unsigned char *e_ident)
 {
-    printf("  Entry point address:               %#lx\n", e_entry);
+	printf("  Entry point address:               ");
 
-    if (e_ident[EI_DATA] == ELFDATA2MSB) {
-        uint32_t entry32 = (e_entry >> 24) | ((e_entry >> 8) & 0xFF00) |
-                           ((e_entry << 8) & 0xFF0000) | (e_entry << 24);
-        printf("                                     %#x\n", entry32);
-    }
+	if (e_ident[EI_DATA] == ELFDATA2MSB)
+	{
+		e_entry = ((e_entry << 8) & 0xFF00FF00) |
+			  ((e_entry >> 8) & 0xFF00FF);
+		e_entry = (e_entry << 16) | (e_entry >> 16);
+	}
+
+	if (e_ident[EI_CLASS] == ELFCLASS32)
+		printf("%#x\n", (unsigned int)e_entry);
+
+	else
+		printf("%#lx\n", e_entry);
 }
-
 
 
 void close_elf(int elf)
 {
-    if (close(elf) == -1)
-    {
-        perror("Error closing file descriptor");
-        exit(EXIT_FAILURE);
-    }
-
-    printf("File descriptor %d closed successfully.\n", elf);
+	if (close(elf) == -1)
+	{
+		dprintf(STDERR_FILENO,
+			"Error: Can't close fd %d\n", elf);
+		exit(98);
+	}
 }
-
 
 
 int main(int __attribute__((__unused__)) argc, char *argv[])
