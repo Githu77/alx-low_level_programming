@@ -187,24 +187,32 @@ void print_elf_type(unsigned int e_type, unsigned char *e_ident)
 
 void print_elf_entry(unsigned long int e_entry, unsigned char *e_ident)
 {
-	 printf("  Entry point address:               %#lx\n", e_entry);
+	printf("  Entry point address:               ");
 
-    if (e_ident[EI_DATA] == ELFDATA2MSB) {
-        uint32_t entry32 = (e_entry >> 24) | ((e_entry >> 8) & 0xFF00) |
-                           ((e_entry << 8) & 0xFF0000) | (e_entry << 24);
-        printf("                                     %#x\n", entry32);
-    }
+	if (e_ident[EI_DATA] == ELFDATA2MSB)
+	{
+		e_entry = ((e_entry << 8) & 0xFF00FF00) |
+			  ((e_entry >> 8) & 0xFF00FF);
+		e_entry = (e_entry << 16) | (e_entry >> 16);
+	}
+
+	if (e_ident[EI_CLASS] == ELFCLASS32)
+		printf("%#x\n", (unsigned int)e_entry);
+
+	else
+		printf("%#lx\n", e_entry);
 }
 
 
 void close_elf(int elf)
 {
 	if (close(elf) == -1)
-	{
-		dprintf(STDERR_FILENO,
-			"Error: Can't close fd %d\n", elf);
-		exit(98);
-	}
+    {
+        perror("Error closing file descriptor");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("File descriptor %d closed successfully.\n", elf);
 }
 
 
