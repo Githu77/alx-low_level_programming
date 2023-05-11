@@ -77,22 +77,21 @@ void print_elf_class(unsigned char *e_ident)
 
 void print_elf_data(unsigned char *e_ident)
 {
-	printf("  Data:                              ");
+	const char *data_type = NULL;
+	const unsigned char data_val = e_ident[EI_DATA];
 
-	switch (e_ident[EI_DATA])
-	{
-	case ELFDATANONE:
-		printf("none\n");
-		break;
-	case ELFDATA2LSB:
-		printf("2's complement, little endian\n");
-		break;
-	case ELFDATA2MSB:
-		printf("2's complement, big endian\n");
-		break;
-	default:
-		printf("<unknown: %x>\n", e_ident[EI_CLASS]);
-	}
+	if (data_val == ELFDATANONE)
+	data_type = "none";
+	else if (data_val == ELFDATA2LSB)
+	data_type = "2's complement, little endian";
+	else if (data_val == ELFDATA2MSB)
+	data_type = "2's complement, big endian";
+	else
+	printf("<unknown: %x>\n", data_val);
+
+	if (data_type)
+	printf("  Data:                              %s\n", 		data_type);
+
 }
 
 
