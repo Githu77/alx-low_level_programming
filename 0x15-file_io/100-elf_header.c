@@ -97,18 +97,12 @@ void print_elf_data(unsigned char *e_ident)
 
 void print_elf_version(unsigned char *e_ident)
 {
-	printf("  Version:                           %d",
-	       e_ident[EI_VERSION]);
+	printf("  Version:                           %d", e_ident[EI_VERSION]);
 
-	switch (e_ident[EI_VERSION])
-	{
-	case EV_CURRENT:
-		printf(" (current)\n");
-		break;
-	default:
-		printf("\n");
-		break;
-	}
+	if (e_ident[EI_VERSION] == EV_CURRENT)
+	printf(" (current)\n");
+	else
+	printf("\n");
 }
 
 
