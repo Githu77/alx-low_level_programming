@@ -19,14 +19,21 @@ void print_elf_entry(unsigned long int e_entry, unsigned char *e_ident);
 void close_elf(int elf);
 
 
-void scan_elf(unsigned char *e_ident)
+void scan_elf(unsigned char *in)
 {
-    const unsigned char magic[] = {0x7f, 'E', 'L', 'F'};
+	int index;
 
-    if (memcmp(e_ident, magic, sizeof(magic)) != 0) {
-        dprintf(STDERR_FILENO, "Error: Not an ELF file\n");
-        exit(98);
-    }
+	for (index = 0; index < 4; index++)
+	{
+		if (in[index] != 127 &&
+		    in[index] != 'E' &&
+		    in[index] != 'L' &&
+		    in[index] != 'F')
+		{
+			dprintf(STDERR_FILENO, "Error: Not an ELF file\n");
+			exit(98);
+		}
+	}
 }
 
 
