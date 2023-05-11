@@ -7,23 +7,23 @@
 #include <stdlib.h>
 #include <string.h>
 
-void scan_elf(unsigned char *in);
-void print_elf_magic(unsigned char *in);
-void print_elf_class(unsigned char *in);
-void print_elf_data(unsigned char *in);
-void print_elf_version(unsigned char *in);
-void print_elf_osabi(unsigned char *in);
-void print_elf_abi(unsigned char *in);
-void print_elf_type(unsigned int e_type, unsigned char *in);
-void print_elf_entry(unsigned long int en, unsigned char *in);
+void scan_elf(unsigned char *e_ident);
+void print_elf_magic(unsigned char *e_ident);
+void print_elf_class(unsigned char *e_ident);
+void print_elf_data(unsigned char *e_ident);
+void print_elf_version(unsigned char *e_ident);
+void print_elf_osabi(unsigned char *e_ident);
+void print_elf_abi(unsigned char *e_ident);
+void print_elf_type(unsigned int e_type, unsigned char *e_ident);
+void print_elf_entry(unsigned long int e_entry, unsigned char *e_ident);
 void close_elf(int elf);
 
 
-void scan_elf(unsigned char *in)
+void scan_elf(unsigned char *e_ident)
 {
     const unsigned char magic[] = {0x7f, 'E', 'L', 'F'};
 
-    if (memcmp(in, magic, sizeof(magic)) != 0) {
+    if (memcmp(e_ident, magic, sizeof(magic)) != 0) {
         dprintf(STDERR_FILENO, "Error: Not an ELF file\n");
         exit(98);
     }
@@ -31,7 +31,7 @@ void scan_elf(unsigned char *in)
 
 
 
-void print_elf_magic(unsigned char *in)
+void print_elf_magic(unsigned char *e_ident)
 {
 	int i;
 
@@ -40,18 +40,18 @@ void print_elf_magic(unsigned char *in)
 
 	for (i = 0; i < EI_NIDENT; i++)
 	{
-		printf("%02x ", in[i]);
+		printf("%02x ", e_ident[i]);
 	}
 
 	printf("\n");
 }
 
 
-void print_elf_class(unsigned char *in)
+void print_elf_class(unsigned char *e_ident)
 {
 	printf("  Class:                             ");
 
-	switch (in[EI_CLASS])
+	switch (e_ident[EI_CLASS])
 	{
 	case ELFCLASSNONE:
 		printf("none\n");
@@ -63,15 +63,15 @@ void print_elf_class(unsigned char *in)
 		printf("ELF64\n");
 		break;
 	default:
-		printf("<unknown: %x>\n", in[EI_CLASS]);
+		printf("<unknown: %x>\n", e_ident[EI_CLASS]);
 	}
 }
 
 
-void print_elf_data(unsigned char *in)
+void print_elf_data(unsigned char *e_ident)
 {
     const char *data_type = NULL;
-    const unsigned char data_val = in[EI_DATA];
+    const unsigned char data_val = e_ident[EI_DATA];
 
     if (data_val == ELFDATANONE)
         data_type = "none";
@@ -88,11 +88,11 @@ void print_elf_data(unsigned char *in)
 
 
 
-void print_elf_version(unsigned char *in)
+void print_elf_version(unsigned char *e_ident)
 {
-    printf("  Version:                           %d", in[EI_VERSION]);
+    printf("  Version:                           %d", e_ident[EI_VERSION]);
 
-    if (in[EI_VERSION] == EV_CURRENT)
+    if (e_ident[EI_VERSION] == EV_CURRENT)
         printf(" (current)\n");
     else
         printf("\n");
@@ -100,50 +100,50 @@ void print_elf_version(unsigned char *in)
 
 
 
-void print_elf_osabi(unsigned char *in)
+void print_elf_osabi(unsigned char *e_ident)
 {
-    printf("  OS/ABI:                            ");
+     printf("  OS/ABI:                            ");
 
-    if (in[EI_OSABI] == ELFOSABI_NONE) {
+    if (e_ident[EI_OSABI] == ELFOSABI_NONE) {
         printf("UNIX - System V\n");
-    } else if (in[EI_OSABI] == ELFOSABI_HPUX) {
+    } else if (e_ident[EI_OSABI] == ELFOSABI_HPUX) {
         printf("UNIX - HP-UX\n");
-    } else if (in[EI_OSABI] == ELFOSABI_NETBSD) {
+    } else if (e_ident[EI_OSABI] == ELFOSABI_NETBSD) {
         printf("UNIX - NetBSD\n");
-    } else if (in[EI_OSABI] == ELFOSABI_LINUX) {
+    } else if (e_ident[EI_OSABI] == ELFOSABI_LINUX) {
         printf("UNIX - Linux\n");
-    } else if (in[EI_OSABI] == ELFOSABI_SOLARIS) {
+    } else if (e_ident[EI_OSABI] == ELFOSABI_SOLARIS) {
         printf("UNIX - Solaris\n");
-    } else if (in[EI_OSABI] == ELFOSABI_IRIX) {
+    } else if (e_ident[EI_OSABI] == ELFOSABI_IRIX) {
         printf("UNIX - IRIX\n");
-    } else if (in[EI_OSABI] == ELFOSABI_FREEBSD) {
+    } else if (e_ident[EI_OSABI] == ELFOSABI_FREEBSD) {
         printf("UNIX - FreeBSD\n");
-    } else if (in[EI_OSABI] == ELFOSABI_TRU64) {
+    } else if (e_ident[EI_OSABI] == ELFOSABI_TRU64) {
         printf("UNIX - TRU64\n");
-    } else if (in[EI_OSABI] == ELFOSABI_ARM) {
+    } else if (e_ident[EI_OSABI] == ELFOSABI_ARM) {
         printf("ARM\n");
-    } else if (in[EI_OSABI] == ELFOSABI_STANDALONE) {
+    } else if (e_ident[EI_OSABI] == ELFOSABI_STANDALONE) {
         printf("Standalone App\n");
     } else {
-        printf("<unknown: %x>\n", in[EI_OSABI]);
+        printf("<unknown: %x>\n", e_ident[EI_OSABI]);
     }
 }
 
 
 
-void print_elf_abi(unsigned char *in)
+void print_elf_abi(unsigned char *e_ident)
 {
-	if (in[EI_ABIVERSION] == 0) {
+	if (e_ident[EI_ABIVERSION] == 0) {
 		printf("  ABI Version:                       unspecified\n");
 	} else {
 		printf("  ABI Version:                       %d\n",
-		       in[EI_ABIVERSION]);
+		       e_ident[EI_ABIVERSION]);
 	}
 }
 
 
 
-void print_elf_type(unsigned int et, unsigned char *in)
+void print_elf_type(unsigned int e_type, unsigned char *e_ident)
 {
 	const char *types[] = {
 		"NONE (None)",
@@ -153,30 +153,30 @@ void print_elf_type(unsigned int et, unsigned char *in)
 		"CORE (Core file)"
 	};
 
-	if (in[EI_DATA] == ELFDATA2MSB)
-		et >>= 8;
+	if (e_ident[EI_DATA] == ELFDATA2MSB)
+		e_type >>= 8;
 
-	if (et >= ET_LOPROC && et <= ET_HIPROC) {
-		printf("Processor specific: (%x)\n", et);
-	} else if (et >= ET_LOOS && et <= ET_HIOS) {
-		printf("OS-specific: (%x)\n", et);
-	} else if (et < ET_NUM) {
-		printf("Type: %s\n", types[et]);
+	if (e_type >= ET_LOPROC && e_type <= ET_HIPROC) {
+		printf("Processor specific: (%x)\n", e_type);
+	} else if (e_type >= ET_LOOS && e_type <= ET_HIOS) {
+		printf("OS-specific: (%x)\n", e_type);
+	} else if (e_type < ET_NUM) {
+		printf("Type: %s\n", types[e_type]);
 	} else {
-		printf("Unknown type (%x)\n", et);
+		printf("Unknown type (%x)\n", e_type);
 	}
 }
 
 
 
-void print_elf_entry(unsigned long int en, unsigned char *in)
+void print_elf_entry(unsigned long int e_entry, unsigned char *e_ident)
 {
-    printf("  Entry point address:               %#lx\n", en);
+    printf("  Entry point address:               %#lx\n", e_entry);
 
-    if (in[EI_DATA] == ELFDATA2MSB) {
-        uint32_t en32 = (en >> 24) | ((en >> 8) & 0xFF00) |
-                           ((en << 8) & 0xFF0000) | (en << 24);
-        printf("                                     %#x\n", en32);
+    if (e_ident[EI_DATA] == ELFDATA2MSB) {
+        uint32_t entry32 = (e_entry >> 24) | ((e_entry >> 8) & 0xFF00) |
+                           ((e_entry << 8) & 0xFF0000) | (e_entry << 24);
+        printf("                                     %#x\n", entry32);
     }
 }
 
