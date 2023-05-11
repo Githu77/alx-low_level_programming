@@ -1,98 +1,59 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
 #include <elf.h>
+#include <fcntl.h>
+#include <unistd.h>
 
-#define BUFFER_SIZE 1024
+#define BUF_SIZE 1024
 
-void display_error(const char *filename, const char *message)
+int main(int argc, char *argv[])
 {
-fprintf(stderr, "%s: %s\n", filename, message);
-exit(98);
-}
+    int fd, i;
+    ssize_t nread;
+    char buf[BUF_SIZE];
+    Elf64_Ehdr *ehdr;
 
-void display_elf_header(const Elf64_Ehdr *header)
-{
-int i;
-printf("ELF Header:\n");
-printf("  Magic:   ");
-for (i = 0; i < EI_NIDENT; i++)
-{
-printf("%02x ", header->e_ident[i]);
-}
-printf("\n");
-printf("  Class:                             %s\n", header->e_ident[EI_CLASS] == ELFCLASS32 ? "ELF32" : "ELF64");
-printf("  Data:                              %s\n", header->e_ident[EI_DATA] == ELFDATA2LSB ? "2's complement, little endian" : "unknown");
-printf("  Version:                           %d (current)\n", header->e_ident[EI_VERSION]);
-printf("  OS/ABI:                            ");
-switch (header->e_ident[EI_OSABI])
-{
-case ELFOSABI_SYSV:
-printf("UNIX - System V\n");
-break;
-case ELFOSABI_NETBSD:
-printf("UNIX - NetBSD\n");
-break;
-default:
-printf("unknown\n");
-}
-printf("  ABI Version:                       %d\n", header->e_ident[EI_ABIVERSION]);
-printf("  Type:                              ");
-switch (header->e_type)
-{
-case ET_NONE:
-printf("NONE (Unknown type)\n");
-break;
-case ET_REL:
-printf("REL (Relocatable file)\n");
-break;
-case ET_EXEC:
-printf("EXEC (Executable file)\n");
-break;
-case ET_DYN:
-printf("DYN (Shared object file)\n");
-break;
-case ET_CORE:
-printf("CORE (Core file)\n");
-break;
-default:
-printf("unknown\n");
-}
-printf("  Entry point address:               0x%x\n", (unsigned int) header->e_entry);
-}
+    if (argc != 2) {
+        fprintf(stderr, "Usage: %s elf_filename\n", argv[0]);
+        return 98;
+    }
 
-int main(int argc, char **argv)
-{
-int fd = open(argv[1], O_RDONLY);
-Elf64_Ehdr header;
+    fd = open(argv[1], O_RDONLY);
+    if (fd == -1) {
+        perror("open");
+        return 98;
+    }
 
-if (argc != 2)
-{
-display_error(argv[0], "Usage: elf_header elf_filename");
-}
+    nread = read(fd, buf, BUF_SIZE);
+    if (nread == -1) {
+        perror("read");
+        return 98;
+    }
 
+    ehdr = (Elf64_Ehdr *) buf;
+    if (ehdr->e_ident[EI_MAG0] != ELFMAG0 || ehdr->e_ident[EI_MAG1] != ELFMAG1
+        || ehdr->e_ident[EI_MAG2] != ELFMAG2 || ehdr->e_ident[EI_MAG3] != ELFMAG3) {
+        fprintf(stderr, "%s is not an ELF file\n", argv[1]);
+        return 98;
+    }
 
-if (fd == -1)
-{
-display_error(argv[1], "Cannot open file");
-}
+    printf("ELF Header:\n");
+    printf("  Magic:   ");
+    for (i = 0; i < EI_NIDENT; i++)
+        printf("%02x%c", ehdr->e_ident[i], i == EI_NIDENT - 1 ? '\n' : ' ');
 
+    printf("  Class:                             %s\n", ehdr->e_ident[EI_CLASS] == ELFCLASS32 ? "ELF32" : "ELF64");
+    printf("  Data:                              %s\n", ehdr->e_ident[EI_DATA] == ELFDATA2LSB ? "2's complement, little endian" : "unknown");
+    printf("  Version:                           %d (current)\n", ehdr->e_ident[EI_VERSION]);
+    printf("  OS/ABI:                            %s\n", ehdr->e_ident[EI_OSABI] == 0 ? "UNIX - System V" : "unknown");
+    printf("  ABI Version:                       %d\n", ehdr->e_ident[EI_ABIVERSION]);
+    printf("  Type:                              %s\n", ehdr->e_type == ET_EXEC ? "EXEC (Executable file)" :
+           (ehdr->e_type == ET_DYN ? "DYN (Shared object file)" :
+           (ehdr->e_type == ET_REL ? "REL (Relocatable file)" : "unknown")));
+    printf("  Entry point address:               0x%lx\n", (unsigned long) ehdr->e_entry);
 
-if (read(fd, &header, sizeof(header)) != sizeof(header))
-{
-display_error(argv[1], "Cannot read ELF header");
-}
+    close(fd);
 
-if (header.e_ident[EI_MAG0] != ELFMAG0 || header.e_ident[EI_MAG1] != ELFMAG1 ||
-header.e_ident[EI_MAG2] != ELFMAG2 || header.e_ident[EI_MAG3] != ELFMAG3)
-{
-display_error(argv[1], "Not an ELF file");
-}
-
-display_elf_header(&header);
-
-close(fd);
-return 0;
+    return 0;
 }
 
